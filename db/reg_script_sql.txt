@@ -1,0 +1,92 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema reg_sys
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `reg_sys` ;
+
+-- -----------------------------------------------------
+-- Schema reg_sys
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `reg_sys` DEFAULT CHARACTER SET utf8 ;
+USE `reg_sys` ;
+
+-- -----------------------------------------------------
+-- Table `reg_sys`.`referrer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `reg_sys`.`referrer` (
+  `referrer_id` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `contact_num` VARCHAR(45) NULL,
+  PRIMARY KEY (`referrer_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `reg_sys`.`agent`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `reg_sys`.`agent` (
+  `agent_id` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `contact_num` VARCHAR(45) NULL,
+  PRIMARY KEY (`agent_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `reg_sys`.`broker`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `reg_sys`.`broker` (
+  `broker_id` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `contact_num` VARCHAR(45) NULL,
+  PRIMARY KEY (`broker_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `reg_sys`.`customer_details`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `reg_sys`.`customer_details` (
+  `customer_id` INT NOT NULL,
+  `first_name` VARCHAR(45) NULL,
+  `last_name` VARCHAR(45) NULL,
+  `age` VARCHAR(45) NULL,
+  `current_occupation` VARCHAR(45) NULL,
+  `contact_details` VARCHAR(45) NULL,
+  `contact_num` VARCHAR(45) NULL,
+  `email` VARCHAR(45) NULL,
+  `fb_acc` VARCHAR(100) NULL,
+  `membership` TINYINT(1) NULL,
+  `referrer_referrer_id` INT NOT NULL,
+  `agent_agent_id` INT NOT NULL,
+  `broker_broker_id` INT NOT NULL,
+  PRIMARY KEY (`customer_id`),
+  INDEX `fk_customer_details_referrer_idx` (`referrer_referrer_id` ASC),
+  INDEX `fk_customer_details_agent1_idx` (`agent_agent_id` ASC),
+  INDEX `fk_customer_details_broker1_idx` (`broker_broker_id` ASC),
+  CONSTRAINT `fk_customer_details_referrer`
+    FOREIGN KEY (`referrer_referrer_id`)
+    REFERENCES `reg_sys`.`referrer` (`referrer_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_customer_details_agent1`
+    FOREIGN KEY (`agent_agent_id`)
+    REFERENCES `reg_sys`.`agent` (`agent_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_customer_details_broker1`
+    FOREIGN KEY (`broker_broker_id`)
+    REFERENCES `reg_sys`.`broker` (`broker_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
